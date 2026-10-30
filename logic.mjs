@@ -21,6 +21,7 @@ export function solve(type,values){
  if(det===0){const zeroInconsistent=(a===0&&b===0&&c!==0)||(d===0&&e===0&&f!==0);const consistent=!zeroInconsistent&&a*f===c*d&&b*f===c*e;status=consistent?'infinite':'none';steps.push(consistent?'Las ecuaciones son compatibles y dependientes: hay infinitas soluciones.':'Las ecuaciones son incompatibles: no hay solución.');}
  else{const dx=c*e-b*f,dy=a*f-c*d;answers=[dx/det,dy/det];steps.push(`Regla de Cramer: Dx = c·e − b·f = ${fmt(dx)}; Dy = a·f − c·d = ${fmt(dy)}.`,`x = Dx / D = ${fmt(answers[0])}; y = Dy / D = ${fmt(answers[1])}.`,`Comprobación: primera ecuación = ${fmt(a*answers[0]+b*answers[1])}; segunda = ${fmt(d*answers[0]+e*answers[1])}.`);}
  }
+ if(answers.some(n=>!Number.isFinite(n)))throw new Error('El resultado excede la precisión numérica disponible. Usa coeficientes de magnitud moderada.');
  const summary=status==='none'?'Sin solución real':status==='infinite'?'Infinitas soluciones':type==='system'?`x = ${fmt(answers[0])} · y = ${fmt(answers[1])}`:answers.map(n=>`x = ${fmt(n)}`).join(' · ');
  return {type,status,answers,steps,summary};
 }
